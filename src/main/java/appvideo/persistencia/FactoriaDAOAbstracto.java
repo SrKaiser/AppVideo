@@ -31,5 +31,6 @@ public abstract class FactoriaDAOAbstracto {
 	/* Metodos factoria para obtener adaptadores */
 	public abstract IUsuarioDAO getUsuarioDAO();
 	public abstract IVideoDAO getVideoDAO();
-	public abstract IEtiquetaDAO getEtiquetaDAO();	
+	public abstract IEtiquetaDAO getEtiquetaDAO();
+	public abstract IListaVideosDAO getListaVideosDAO();
 }

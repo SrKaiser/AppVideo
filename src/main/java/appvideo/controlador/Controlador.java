@@ -7,6 +7,7 @@ import appvideo.persistencia.DAOException;
 import appvideo.persistencia.TDSFactoriaDAO;
 import appvideo.persistencia.FactoriaDAOAbstracto;
 import appvideo.persistencia.IEtiquetaDAO;
+import appvideo.persistencia.IListaVideosDAO;
 import appvideo.dominio.Usuario;
 import appvideo.dominio.Video;
 
@@ -20,6 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import appvideo.dominio.Etiqueta;
+import appvideo.dominio.ListaVideos;
 import appvideo.dominio.RepositorioEtiquetas;
 import appvideo.dominio.RepositorioUsuarios;
 import appvideo.dominio.RepositorioVideos;
@@ -29,7 +31,7 @@ public final class Controlador implements VideosListener {
 	private static Controlador unicaInstancia;
 	private FactoriaDAOAbstracto factoria;
 
-	private Usuario usuarioActual;
+	private Usuario usuarioActual = null;
 	private RepositorioUsuarios repositorioUsuarios;
 	private RepositorioVideos repositorioVideos;
 	private RepositorioEtiquetas repositorioEtiquetas;
@@ -104,6 +106,10 @@ public final class Controlador implements VideosListener {
 		}
 
 		Usuario usuario = new Usuario(nombre, apellidos, email, fechaNacimiento, login, password);
+		
+		IListaVideosDAO listaVideosDAO = factoria.getListaVideosDAO();
+		listaVideosDAO.crearListaVideos(usuario.getVideosRecientes());
+		
 		IUsuarioDAO usuarioDAO = factoria.getUsuarioDAO(); /* Adaptador DAO para almacenar el nuevo Usuario en la BD */
 		usuarioDAO.crearUsuario(usuario);
 		repositorioUsuarios.addUsuario(usuario);
@@ -201,5 +207,20 @@ public final class Controlador implements VideosListener {
 	
 	public void cargarEtiquetasXML() {
 		repositorioEtiquetas.cargarEtiquetasXML();
+	}
+	
+	/* Funciones para controlar listas de videos */
+	public ListaVideos getVideosRecientes() {
+		return this.usuarioActual.getVideosRecientes();
+	}
+	
+	public void addVideoRecientes(Video video) {
+		if (this.usuarioActual != null) {
+			this.usuarioActual.addVideoReciente(video);
+			IListaVideosDAO listaVideosDAO = factoria.getListaVideosDAO();
+			listaVideosDAO.modificarListaVideos(usuarioActual.getVideosRecientes());
+			IUsuarioDAO usuarioDAO = factoria.getUsuarioDAO();
+			usuarioDAO.modificarUsuario(this.usuarioActual);
+		}
 	}
 }

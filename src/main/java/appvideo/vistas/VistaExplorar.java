@@ -93,7 +93,6 @@ public class VistaExplorar extends JPanel {
 		tablaVideos.fireTableDataChanged();
 	}
 
-	// TODO Revisar
 	private void explorarVideos() {
 		btnBuscar.addActionListener(ev -> {
 			String busqueda = txtBuscar.getText();
@@ -144,11 +143,8 @@ public class VistaExplorar extends JPanel {
 					int fila = table.rowAtPoint(e.getPoint());
 					int columna = table.columnAtPoint(e.getPoint());
 					if (tablaVideos.getValueAt(fila, columna) != null) {
-						// vistaPrincipal.getControlador().addVideoRecientes(tablaVideos.getValueAt(fila,
-						// columna));
-						vistaPrincipal
-								.cargarVideo(new VistaVideo(vistaPrincipal, tablaVideos.getValueAt(fila, columna)));
-						validate();
+						vistaPrincipal.getControlador().addVideoRecientes(tablaVideos.getValueAt(fila,columna));
+						vistaPrincipal.cargarVideo(new VistaVideo(vistaPrincipal, tablaVideos.getValueAt(fila, columna)));
 					}
 				}
 			}

@@ -32,6 +32,9 @@ public class VistaVideo extends JPanel {
 	private JButton btnSalir;
 	private JButton btnAnadir;
 	
+	private JLabel lblMiniatura;
+	private JLabel lblCopyright;
+	
 	public VistaVideo(VistaPrincipal vistaPrincipal, Video video) {
 		this.video = video;
 		this.vistaPrincipal = vistaPrincipal;
@@ -85,6 +88,12 @@ public class VistaVideo extends JPanel {
 		}
 	}
 	
+	public void ocultarDatos() {
+		btnSalir.setVisible(false);
+		lblCopyright.setVisible(false);
+		lblMiniatura.setVisible(false);
+	}
+	
 	private void initialize() {
 		JPanel panel = new JPanel();
 		add(panel);
@@ -133,7 +142,7 @@ public class VistaVideo extends JPanel {
 		JLabel lblNewLabel_3 = new JLabel("\r\n\r\n");
 		panel.add(lblNewLabel_3);
 		
-		JLabel lblMiniatura= new JLabel();
+		lblMiniatura= new JLabel();
 		lblMiniatura.setAlignmentX(0.5f);
 		lblMiniatura.setIcon(videoWeb.getThumb(video.getUrl()));
 		panel.add(lblMiniatura);
@@ -141,7 +150,7 @@ public class VistaVideo extends JPanel {
 		JLabel lblNewLabel_4 = new JLabel("\r\n\r\n");
 		panel.add(lblNewLabel_4);
 		
-		JLabel lblCopyright=new JLabel(videoWeb.getVersion());
+		lblCopyright=new JLabel(videoWeb.getVersion());
 		lblCopyright.setAlignmentX(0.5f);
 		panel.add(lblCopyright);
 

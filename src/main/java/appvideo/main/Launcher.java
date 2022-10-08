@@ -3,8 +3,11 @@ package appvideo.main;
 import java.awt.Component;
 import java.awt.EventQueue;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JTable;
+import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
@@ -56,6 +59,31 @@ public class Launcher
 					label.setIcon(videoWeb.getThumb(video.getUrl()));
 					label.setText(video.getTitulo());
 					
+				}
+				return label;
+			}
+		};
+	}
+	
+	public static ListCellRenderer<? super Video> createListRenderer() {
+		return new DefaultListCellRenderer() {
+			
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+				JLabel label = null;
+				if (value != null) {
+					label = (JLabel) c;
+					Video video = (Video) value;
+					label.setIcon(videoWeb.getThumb(video.getUrl()));
+					label.setText(video.getTitulo());
+					label.setHorizontalTextPosition(JLabel.CENTER);
+					label.setVerticalTextPosition(JLabel.BOTTOM);
+					label.setHorizontalAlignment(SwingConstants.CENTER);
+					label.setVerticalAlignment(SwingConstants.CENTER);
 				}
 				return label;
 			}

@@ -404,6 +404,7 @@ public class VistaPrincipal extends JPanel {
 		panelNuevo = vistaRecientes;
 		AppVideo.remove(panelViejo);
 		panelViejo = panelNuevo;
+		vistaRecientes.cargarListaRecientes();
 		AppVideo.getContentPane().add(panelNuevo,  BorderLayout.CENTER);
 		this.vistaRegistro.limpiar();
 		AppVideo.setResizable(true);

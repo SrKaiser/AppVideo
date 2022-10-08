@@ -23,5 +23,10 @@ public final class TDSFactoriaDAO extends FactoriaDAOAbstracto {
 	public TDSEtiquetaDAO getEtiquetaDAO() {	
 		return TDSEtiquetaDAO.getUnicaInstancia(); 
 	}
+	
+	@Override
+	public IListaVideosDAO getListaVideosDAO() {	
+		return TDSListaVideosDAO.getUnicaInstancia(); 
+	}
 
 }
