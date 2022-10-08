@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<videos xmlns="http://www.tds.es/videos" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+	xs:schemaLocation="http://www.tds.es/videos videos.xsd">
+	
+	<video titulo="Invasion">
+		<URL><![CDATA[https://www.youtube.com/watch?v=DlaHxL3mHAU]]></URL>
+		<etiqueta>Series</etiqueta>
+		<etiqueta>AppleTV</etiqueta>
+	</video>
+	
+	<video titulo="Technology Is Reinventing Humanity - Jordan Nguyen">
+		<URL><![CDATA[https://www.youtube.com/watch?v=VxuWIXdYYyQ]]></URL>
+		<etiqueta>Tech</etiqueta>
+		<etiqueta>Speech</etiqueta>
+	</video>
+
+	<video titulo="House of Gucci">
+		<URL><![CDATA[https://www.youtube.com/watch?v=eGNnpVKxV6s]]></URL>
+		<etiqueta>Movie</etiqueta>
+		<etiqueta>Cinema</etiqueta>
+	</video>
+	
+	<video titulo="Arctic Monkeys - Do I Wanna Know?">
+		<URL><![CDATA[https://www.youtube.com/watch?v=bpOSxM0rNPM]]></URL>
+		<etiqueta>Music</etiqueta>
+		<etiqueta>Artic Monkeys</etiqueta>
+	</video>
+
+</videos>
