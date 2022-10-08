@@ -55,6 +55,7 @@ public class Launcher
 					label.setVerticalAlignment(SwingConstants.CENTER);
 					label.setIcon(videoWeb.getThumb(video.getUrl()));
 					label.setText(video.getTitulo());
+					
 				}
 				return label;
 			}
