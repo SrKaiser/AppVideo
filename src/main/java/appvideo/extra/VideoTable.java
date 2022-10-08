@@ -1,6 +1,7 @@
 package appvideo.extra;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -10,7 +11,7 @@ import appvideo.dominio.Video;
 public class VideoTable extends AbstractTableModel {
 	
 	private static final int numColumnas = 4;
-	private LinkedList<Video> videos;
+	private List<Video> videos;
 	
 	public VideoTable() {
 		this.videos = new LinkedList<Video>();
@@ -34,7 +35,7 @@ public class VideoTable extends AbstractTableModel {
 		return videos.get(rowIndex*4+columnIndex);
 	}
 	
-	public void fillTable(LinkedList<Video> videos) {
+	public void fillTable(List<Video> videos) {
 		this.videos = videos;
 		int tam = videos.size();
 		for(int i = 0; i < numColumnas-(tam%numColumnas); i++) {

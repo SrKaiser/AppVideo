@@ -57,6 +57,8 @@ public final class Controlador implements VideosListener {
 			e.printStackTrace();
 		}
 	}
+	
+	
 
 	public static Controlador getUnicaInstancia() {
 		if (unicaInstancia == null)
@@ -158,9 +160,46 @@ public final class Controlador implements VideosListener {
 		}
 	}
 	
+	public List<Video> explorarVideos(String titulo, LinkedList<Etiqueta> etiquetas) throws DAOException {
+		return repositorioVideos.explorarVideos(titulo, etiquetas);
+	}
+	
+	public void aumentarReproducciones(Video video) {
+		video.aumentarReproduccion();
+		IVideoDAO videoDAO = factoria.getVideoDAO();
+		videoDAO.modificarVideo(video);
+	}
+	
+	/* Funciones para controlar las Etiquetas */
 	public void registrarEtiqueta(Etiqueta etiqueta) {
 		IEtiquetaDAO etiquetaDAO = factoria.getEtiquetaDAO();
 		etiquetaDAO.crearEtiqueta(etiqueta);
 	}
-
+	
+	public boolean anadirEtiquetaVideo(String nombre, Video video) {
+		Etiqueta etiqueta = repositorioEtiquetas.crearEtiqueta(nombre);
+		if (etiqueta == null) return false;
+		this.registrarEtiqueta(etiqueta);
+		repositorioEtiquetas.addColeccionIDEtiqueta(etiqueta);
+		video.addEtiqueta(etiqueta);
+		IVideoDAO videoDAO = factoria.getVideoDAO();
+		videoDAO.modificarVideo(video);
+		return true;
+	}
+	
+	public List<Etiqueta> obtenerTodasEtiquetas() throws DAOException {
+		return this.repositorioEtiquetas.getEtiquetas();
+	}
+	
+	public List<Etiqueta> obtenerEtiquetasVideo(Video video) {
+		return video.getEtiquetas();
+	}
+	
+	public Etiqueta getEtiqueta(String nombre) {
+		return this.repositorioEtiquetas.getEtiqueta(nombre);
+	}
+	
+	public void cargarEtiquetasXML() {
+		repositorioEtiquetas.cargarEtiquetasXML();
+	}
 }

@@ -1,5 +1,6 @@
 package appvideo.dominio;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,8 +35,25 @@ public class RepositorioEtiquetas {
 		}
 	}
 	
+	public void cargarEtiquetasXML() {
+		try {
+			factoria = FactoriaDAOAbstracto.getInstancia();
+			List<Etiqueta> listaEtiquetas = factoria.getEtiquetaDAO().obtenerTodasEtiquetas();
+			for (Etiqueta etiqueta : listaEtiquetas) {
+				coleccionEtiquetasID.put(etiqueta.getId(), etiqueta);
+				coleccionEtiquetasNombre.put(etiqueta.getNombre(), etiqueta);
+			}
+		} catch (DAOException eDAO) {
+			   eDAO.printStackTrace();
+		}
+	}
+	
 	public List<Etiqueta> getEtiquetas() throws DAOException {
-		return new LinkedList<Etiqueta>(coleccionEtiquetasID.values());
+		LinkedList<Etiqueta> listaEtiquetas = new LinkedList<>();
+		coleccionEtiquetasNombre.values().stream()
+		.sorted( Comparator.comparing( Etiqueta::getNombre))
+		.forEach(e -> listaEtiquetas.add(e));
+		return listaEtiquetas;
 	}
 	
 	public Etiqueta getEtiqueta(int id) {
@@ -54,5 +72,20 @@ public class RepositorioEtiquetas {
 	public void removeEtiqueta(Etiqueta etiqueta) {
 		coleccionEtiquetasID.remove(etiqueta.getId());
 		coleccionEtiquetasNombre.remove(etiqueta.getNombre());
+	}
+	
+	public Etiqueta crearEtiqueta(String nombre) {
+		
+		if(coleccionEtiquetasNombre.get(nombre)!=null) {
+			return null;
+		}
+		
+		Etiqueta e = new Etiqueta(nombre);
+		coleccionEtiquetasNombre.put(nombre, e);
+		return e;
+	}
+	
+	public void addColeccionIDEtiqueta(Etiqueta etiqueta) {
+		coleccionEtiquetasID.put(etiqueta.getId(), etiqueta);
 	}
 }

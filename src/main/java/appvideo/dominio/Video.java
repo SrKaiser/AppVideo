@@ -59,10 +59,29 @@ public class Video {
 	public void setNumReproducciones(int numReproducciones) {
 		this.numReproducciones = numReproducciones;
 	}
+	
+	public void aumentarReproduccion() {
+		this.numReproducciones++;
+	}
 
 	public void addEtiqueta(Etiqueta etiqueta) {
 		etiquetas.add(etiqueta);
 	}
+	
+	public boolean tieneEtiqueta(LinkedList<Etiqueta> etiquetasBusqueda) {
+		boolean rtrn = false;
+		if (etiquetasBusqueda.isEmpty()) return true;
+		for(Etiqueta etiqueta : etiquetasBusqueda) {
+			for (Etiqueta etiqueta1 : etiquetas) {
+				if(etiqueta1.getNombre().equals(etiqueta.getNombre())) {
+					rtrn = true;
+					break;
+				}
+			}
+			if (rtrn) break;
+		}
+        return rtrn;
+    }
 	
 	
 	

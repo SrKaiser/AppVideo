@@ -25,6 +25,7 @@ import java.io.File;
 import javax.swing.border.LineBorder;
 
 import appvideo.controlador.Controlador;
+import appvideo.persistencia.DAOException;
 import pulsador.Luz;
 
 import javax.swing.JPasswordField;
@@ -124,7 +125,11 @@ public class VistaPrincipal extends JPanel {
 	}
 	
 	private void botonExplorar() {
-		btnExplorar.addActionListener(ev -> { cargarExplorar(); });
+		btnExplorar.addActionListener(ev -> { try {
+			cargarExplorar();
+		} catch (DAOException e) {
+			e.printStackTrace();
+		} });
 	}
 	
 	private void botonRecientes() {
@@ -147,6 +152,7 @@ public class VistaPrincipal extends JPanel {
             {
                File fichero = fileChooser.getSelectedFile();
                this.controlador.cargarVideos(fichero);
+               controlador.cargarEtiquetasXML();
             }
 		});
 	}
@@ -377,10 +383,11 @@ public class VistaPrincipal extends JPanel {
 		AppVideo.validate();
 	}
 	
-	public void cargarExplorar() {
+	public void cargarExplorar() throws DAOException {
 		AppVideo.setBounds(600, 200, ANCHO_FRAME, ALTO_FRAME);
 		panel.setVisible(true);
 		panelNuevo = vistaExplorar;
+		vistaExplorar.cargarEtiquetas();
 		AppVideo.remove(panelViejo);
 		panelViejo = panelNuevo;
 		AppVideo.getContentPane().add(panelNuevo,  BorderLayout.CENTER);
@@ -445,10 +452,11 @@ public class VistaPrincipal extends JPanel {
 		AppVideo.validate();
 	}
 	
-	public void salirVideo() {
+	public void salirVideo() throws DAOException {
 		AppVideo.setBounds(600, 200, ANCHO_FRAME, ALTO_FRAME);
 		panel.setVisible(true);
 		AppVideo.remove(panelViejo);
+		vistaExplorar.cargarEtiquetas();
 		panelViejo = panelAUX;
 		AppVideo.getContentPane().add(panelAUX,  BorderLayout.CENTER);
 		AppVideo.revalidate();

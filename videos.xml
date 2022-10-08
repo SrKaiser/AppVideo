@@ -25,5 +25,22 @@
 		<etiqueta>Music</etiqueta>
 		<etiqueta>Artic Monkeys</etiqueta>
 	</video>
-
+	
+	<video titulo="Me at the zoo">
+		<URL><![CDATA[https://www.youtube.com/watch?v=jNQXAC9IVRw]]></URL>
+		<etiqueta>Zoo</etiqueta>
+		<etiqueta>History</etiqueta>
+	</video>
+	
+	<video titulo="Waka Waka (Esto es Africa)">
+		<URL><![CDATA[https://www.youtube.com/watch?v=dzsuE5ugxf4]]></URL>
+		<etiqueta>Music</etiqueta>
+		<etiqueta>Shakira</etiqueta>
+	</video> 
+	
+	<video titulo="Nikone - Blanco y Negro">
+		<URL><![CDATA[https://www.youtube.com/watch?v=6hytsVV2OqI]]></URL>
+		<etiqueta>Music</etiqueta>
+		<etiqueta>Nikone</etiqueta>
+	</video> 
 </videos>
