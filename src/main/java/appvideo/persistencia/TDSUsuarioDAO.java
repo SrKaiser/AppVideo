@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
@@ -27,6 +28,7 @@ public class TDSUsuarioDAO implements IUsuarioDAO {
 	private static final String FECHA_NACIMIENTO = "fechaNacimiento";
 	
 	private static final String VIDEOS_RECIENTES = "videosRecientes";
+	private static final String LISTAS_VIDEOS = "listasVideos";
 
 	private static TDSUsuarioDAO unicaInstancia = null;
 	private static ServicioPersistencia servPersistencia;
@@ -52,10 +54,6 @@ public class TDSUsuarioDAO implements IUsuarioDAO {
 		Entidad eUsuario = new Entidad();
 		eUsuario.setNombre(USUARIO);
 		
-		/*TDSListaVideosDAO listaVideosDAO = TDSListaVideosDAO.getUnicaInstancia();
-		ListaVideos recientes = usuario.getVideosRecientes();
-		listaVideosDAO.crearListaVideos(recientes);*/
-		
 		eUsuario.setPropiedades(new ArrayList<Propiedad>(
 				Arrays.asList(new Propiedad(NOMBRE, usuario.getNombre()),
 				new Propiedad(APELLIDOS, usuario.getApellidos()), 
@@ -63,7 +61,8 @@ public class TDSUsuarioDAO implements IUsuarioDAO {
 				new Propiedad(LOGIN, usuario.getLogin()), 
 				new Propiedad(PASSWORD, usuario.getPassword()),
 				new Propiedad(FECHA_NACIMIENTO, dateFormat.format(usuario.getFechaNacimiento())),
-				new Propiedad(VIDEOS_RECIENTES, String.valueOf(usuario.getVideosRecientes().getId())))));
+				new Propiedad(VIDEOS_RECIENTES, String.valueOf(usuario.getVideosRecientes().getId())),
+				new Propiedad(LISTAS_VIDEOS, parseListasVideos(usuario.getListasVideos())))));
 		return eUsuario;
 	}
 
@@ -100,6 +99,8 @@ public class TDSUsuarioDAO implements IUsuarioDAO {
 				prop.setValor(dateFormat.format(usuario.getFechaNacimiento()));
 			} else if (prop.getNombre().equals(VIDEOS_RECIENTES)) {
 				prop.setValor(String.valueOf(usuario.getVideosRecientes().getId()));
+			} else if (prop.getNombre().equals(LISTAS_VIDEOS)) {
+				prop.setValor(parseListasVideos(usuario.getListasVideos()));
 			}
 			servPersistencia.modificarPropiedad(prop);
 		}
@@ -120,10 +121,13 @@ public class TDSUsuarioDAO implements IUsuarioDAO {
 		String password = servPersistencia.recuperarPropiedadEntidad(eUsuario, PASSWORD);
 		ListaVideos recientes = null;
 		recientes = parseVideosRecientes(servPersistencia.recuperarPropiedadEntidad(eUsuario, VIDEOS_RECIENTES));
+		List<ListaVideos> listasVideos = null;
+		listasVideos = parseListasVideos2(servPersistencia.recuperarPropiedadEntidad(eUsuario, LISTAS_VIDEOS));
 		
 		Usuario usuario = new Usuario(nombre, apellidos, email, fechaNacimiento, login, password);
 		usuario.setId(eUsuario.getId());
 		usuario.setVideosRecientes(recientes);
+		usuario.setListasVideos(listasVideos);
 
 		return usuario;
 	}
@@ -153,6 +157,26 @@ public class TDSUsuarioDAO implements IUsuarioDAO {
 		}
 		return new ListaVideos("recientes");
 		
+	}
+	
+	private String parseListasVideos(List<ListaVideos> listavideos) {
+		String listasVideosJuntos = "";
+		for (ListaVideos listaVideos : listavideos) {
+			listasVideosJuntos += listaVideos.getId() + " ";
+		}
+		return listasVideosJuntos.trim();
+	}
+	
+	private List<ListaVideos> parseListasVideos2(String listasVideosJuntos) {
+		List<ListaVideos> listavideos = new LinkedList<ListaVideos>();
+		if(listasVideosJuntos != null) {
+			StringTokenizer strTok = new StringTokenizer(listasVideosJuntos, " ");
+			TDSListaVideosDAO listaVideosDAO = TDSListaVideosDAO.getUnicaInstancia();
+			while (strTok.hasMoreTokens()) {
+				listavideos.add(listaVideosDAO.obtenerListaVideos(Integer.valueOf((String) strTok.nextElement())));
+			}
+		}
+		return listavideos;
 	}
 
 }

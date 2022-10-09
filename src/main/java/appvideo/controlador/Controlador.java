@@ -223,4 +223,30 @@ public final class Controlador implements VideosListener {
 			usuarioDAO.modificarUsuario(this.usuarioActual);
 		}
 	}
+	
+	public ListaVideos getListaVideosNombre(String nombreLista) {
+		return this.usuarioActual.getListaVideosNombre(nombreLista);
+	}
+	
+	public void anadirListaVideos(ListaVideos listaVideos) {
+		IListaVideosDAO listaVideosDAO = factoria.getListaVideosDAO();
+		listaVideosDAO.crearListaVideos(listaVideos);
+		this.usuarioActual.addListaVideos(listaVideos);
+		IUsuarioDAO usuarioDAO = factoria.getUsuarioDAO();
+		usuarioDAO.modificarUsuario(usuarioActual);
+	}
+	
+	public void eliminarListaVideos(String nombreLista) {
+		this.usuarioActual.removeListaVideos(nombreLista);
+		IUsuarioDAO usuarioDAO = factoria.getUsuarioDAO();
+		usuarioDAO.modificarUsuario(usuarioActual);
+	}
+	
+	public void actualizarListaVideos(ListaVideos listaVideos) {
+		IListaVideosDAO listaVideosDAO = factoria.getListaVideosDAO();
+		listaVideosDAO.modificarListaVideos(listaVideos);
+		IUsuarioDAO usuarioDAO = factoria.getUsuarioDAO();
+		usuarioDAO.modificarUsuario(this.usuarioActual);
+	}
+	
 }

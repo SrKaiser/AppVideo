@@ -2,7 +2,6 @@ package appvideo.vistas;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -10,7 +9,6 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
-import javax.swing.JSpinner;
 
 import appvideo.dominio.Video;
 import appvideo.main.Launcher;

@@ -70,7 +70,7 @@ public class Video {
 	
 	public boolean tieneEtiqueta(LinkedList<Etiqueta> etiquetasBusqueda) {
 		boolean rtrn = false;
-		if (etiquetasBusqueda.isEmpty()) return true;
+		if (etiquetasBusqueda == null || etiquetasBusqueda.isEmpty()) return true;
 		for(Etiqueta etiqueta : etiquetasBusqueda) {
 			for (Etiqueta etiqueta1 : etiquetas) {
 				if(etiqueta1.getNombre().equals(etiqueta.getNombre())) {

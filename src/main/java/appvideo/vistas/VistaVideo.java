@@ -1,7 +1,6 @@
 package appvideo.vistas;
 
 import javax.swing.JPanel;
-import javax.swing.border.BevelBorder;
 
 import appvideo.dominio.Etiqueta;
 import appvideo.dominio.Video;

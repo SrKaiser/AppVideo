@@ -2,6 +2,7 @@ package appvideo.dominio;
 
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Usuario {
 	
@@ -17,6 +18,8 @@ public class Usuario {
 	private ListaVideos videosRecientes;
 	private static final int MAX_VIDEOS_RECIENTES = 5;
 	
+	private List<ListaVideos> listasVideos;
+	
 	public Usuario(String nombre, String apellidos, String email, Date fechaNacimiento, String login, String password) {
 		this.id = 0;
 		this.nombre = nombre;
@@ -28,6 +31,7 @@ public class Usuario {
 		this.premium = false;
 		
 		this.videosRecientes = new ListaVideos("recientes");
+		this.listasVideos = new LinkedList<ListaVideos>();
 	}
 
 	public int getId() {
@@ -115,8 +119,35 @@ public class Usuario {
 		
 		videosRecientes.getVideos().addFirst(video);
 	}
+
+	public List<ListaVideos> getListasVideos() {
+		return listasVideos;
+	}
+
+	public void setListasVideos(List<ListaVideos> listasVideos) {
+		this.listasVideos = listasVideos;
+	}
 	
+	public ListaVideos getListaVideosNombre(String nombreLista) {
+		for (ListaVideos listaVideos : listasVideos) {
+			if (listaVideos.getNombre().equals(nombreLista)) {
+				return listaVideos;
+			}
+		}
+		return null;
+	}
 	
+	public void addListaVideos(ListaVideos listaVideos) {
+		listasVideos.add(listaVideos);
+	}
+	
+	public void removeListaVideos(String nombreLista) {
+		for (ListaVideos listaVideos : listasVideos) {
+			if (listaVideos.getNombre().equals(nombreLista)) {
+				listasVideos.remove(listaVideos);
+			}
+		}
+	}
 	
 	
 }

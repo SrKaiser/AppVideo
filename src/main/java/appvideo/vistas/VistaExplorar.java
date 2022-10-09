@@ -13,7 +13,6 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-import java.awt.FlowLayout;
 import javax.swing.ImageIcon;
 import javax.swing.border.LineBorder;
 import javax.swing.table.TableColumn;
