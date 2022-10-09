@@ -42,6 +42,10 @@ public class VistaVideo extends JPanel {
 		initialize();
 	}
 	
+	public void cancelarReproduccion() {
+		videoWeb.cancel();
+	}
+	
 	private void salirReproduccion() {
 		btnSalir.addActionListener(ev -> { 
 			videoWeb.cancel();

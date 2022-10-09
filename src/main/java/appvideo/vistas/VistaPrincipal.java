@@ -417,6 +417,7 @@ public class VistaPrincipal extends JPanel {
 		AppVideo.setBounds(600, 200, ANCHO_FRAME, ALTO_FRAME);
 		panel.setVisible(true);
 		panelNuevo = vistaMisListas;
+		vistaMisListas.cargarComboBox();
 		AppVideo.remove(panelViejo);
 		panelViejo = panelNuevo;
 		AppVideo.getContentPane().add(panelNuevo,  BorderLayout.CENTER);

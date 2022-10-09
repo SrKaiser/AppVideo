@@ -69,6 +69,13 @@ public class ListaVideos {
 		videos.remove(video);
 	}
 	
+	public void removeAllVideos() {
+		for(Video video : videos) {
+			videos.remove(video);
+		}
+
+	}
+	
 	
 	
 	

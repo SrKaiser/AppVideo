@@ -228,6 +228,14 @@ public final class Controlador implements VideosListener {
 		return this.usuarioActual.getListaVideosNombre(nombreLista);
 	}
 	
+	public List<String> getNombresListasVideos(){
+		LinkedList<String> nombresListasVideos = new LinkedList<>();
+		for(ListaVideos listaVideos : usuarioActual.getListasVideos()) {
+			nombresListasVideos.add(listaVideos.getNombre());
+		}
+		return nombresListasVideos;
+	}
+	
 	public void anadirListaVideos(ListaVideos listaVideos) {
 		IListaVideosDAO listaVideosDAO = factoria.getListaVideosDAO();
 		listaVideosDAO.crearListaVideos(listaVideos);

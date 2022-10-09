@@ -166,6 +166,8 @@ public class VistaNuevaLista extends JPanel {
 				JOptionPane.showMessageDialog(vistaPrincipal.getAppVideo(),
 						"Introduce el nombre de una lista para crear.\n", "Nueva Lista", JOptionPane.ERROR_MESSAGE);
 			} else if (vistaPrincipal.getControlador().getListaVideosNombre(textFieldBuscarLista.getText()) == null) {
+				listaModelVideos.clear();
+				listaModelVideos.removeAllElements();
 				listaActual = new ListaVideos(textFieldBuscarLista.getText());
 				vistaPrincipal.getControlador().anadirListaVideos(listaActual);
 				JOptionPane.showMessageDialog(vistaPrincipal.getAppVideo(),
@@ -219,6 +221,7 @@ public class VistaNuevaLista extends JPanel {
 
 	private void aceptarLista() {
 		btnAceptar.addActionListener(ev -> {
+			listaActual.removeAllVideos();
 			for(int i = 0; i < listaModelVideos.size(); i++){
                 listaActual.addVideo(listaModelVideos.get(i));
             }
@@ -355,8 +358,6 @@ public class VistaNuevaLista extends JPanel {
 		panelListaVideos.add(scrollPaneListaVideos);
 
 		listVideos = new JList<Video>();
-		scrollPaneListaVideos.setViewportView(listVideos);
-
 		listVideos.setCellRenderer(Launcher.createListRenderer());
 		listaModelVideos = new DefaultListModel<Video>();
 		listVideos.setModel(listaModelVideos);
