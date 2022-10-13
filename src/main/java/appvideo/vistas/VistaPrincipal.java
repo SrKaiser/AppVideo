@@ -280,8 +280,7 @@ public class VistaPrincipal extends JPanel {
 		panelVista.setLayout(gbl_panelVista);
 		
 		
-		//ImageIcon img = new ImageIcon(".\\src\\main\\java\\appvideo\\imagenes\\Logo AppVideo.png");
-		ImageIcon img = new ImageIcon("C:\\Users\\Kaiser\\Desktop\\TDS AppVideo\\AppVideo\\AppVideo\\src\\main\\java\\appvideo\\imagenes\\Logo AppVideo.png");
+		ImageIcon img = new ImageIcon(VistaPrincipal.class.getResource("/appvideo/imagenes/Logo AppVideo.png"));
 		Image logo = img.getImage();
 		Image logoModificado = logo.getScaledInstance(250, 65, Image.SCALE_SMOOTH);
 		img = new ImageIcon(logoModificado);
