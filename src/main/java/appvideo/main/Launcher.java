@@ -39,12 +39,9 @@ public class Launcher
 		return videoWeb;
 	}
 	
-	//TODO Revisar
+	@SuppressWarnings("serial")
 	public static TableCellRenderer createTableRenderer(){
 		return new DefaultTableCellRenderer() {
-			
-			private static final long serialVersionUID = 1L;
-
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -65,11 +62,9 @@ public class Launcher
 		};
 	}
 	
+	@SuppressWarnings("serial")
 	public static ListCellRenderer<? super Video> createListRenderer() {
 		return new DefaultListCellRenderer() {
-			
-			private static final long serialVersionUID = 1L;
-			
 			@Override
 			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 					boolean cellHasFocus) {

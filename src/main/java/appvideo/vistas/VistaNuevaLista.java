@@ -68,7 +68,6 @@ public class VistaNuevaLista extends JPanel {
 		initialize();
 	}
 
-	// TODO Revisar
 	public void actualizarTablaVideos() {
 		table = new JTable();
 		table.setBackground(new Color(240, 240, 240));

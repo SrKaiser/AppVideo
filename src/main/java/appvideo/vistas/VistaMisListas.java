@@ -46,7 +46,7 @@ public class VistaMisListas extends JPanel {
 		initialize();
 	}
 	
-	//TODO ERROR
+	//TODO PREGUNTAR SOBRE EL ERROR
 	public void cargarComboBox() {
 		comboBoxListasVideos.removeAllItems();
 		nombresListasVideos = vistaPrincipal.getControlador().getNombresListasVideos();

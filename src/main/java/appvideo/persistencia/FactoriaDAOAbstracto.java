@@ -11,10 +11,11 @@ public abstract class FactoriaDAOAbstracto {
 	 * Solo existe el tipo TDSFactoriaDAO
 	 */
 	
+	@SuppressWarnings("deprecation")
 	public static FactoriaDAOAbstracto getInstancia(String tipo) throws DAOException{
 		if (unicaInstancia == null)
 			try { 
-				unicaInstancia=(FactoriaDAOAbstracto) Class.forName(tipo).newInstance(); //.getDeclaredConstructor()
+				unicaInstancia=(FactoriaDAOAbstracto) Class.forName(tipo).newInstance();
 			} catch (Exception e) {	
 				throw new DAOException(e.getMessage());
 		} 

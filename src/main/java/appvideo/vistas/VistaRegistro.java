@@ -86,7 +86,7 @@ public class VistaRegistro extends JPanel {
 			
 	}
 	
-	private void manejadorListener() {
+	private void listener() {
 		volver();
 		registrarse();
 	}
@@ -203,7 +203,7 @@ public class VistaRegistro extends JPanel {
 		gbc_botonRegistrarse.gridy = 6;
 		add(botonRegistrarse, gbc_botonRegistrarse);
 		
-		manejadorListener();
+		listener();
 
 	}
 

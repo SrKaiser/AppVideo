@@ -14,6 +14,8 @@ import appvideo.dominio.Video;
 import appvideo.main.Launcher;
 
 
+//TODO Pendiente cancelar la reproducción cuando se abandona la vista de recientes
+
 @SuppressWarnings("serial")
 public class VistaRecientes extends JPanel {
 	
