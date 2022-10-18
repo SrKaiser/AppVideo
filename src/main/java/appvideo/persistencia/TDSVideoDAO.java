@@ -124,7 +124,6 @@ public class TDSVideoDAO implements IVideoDAO{
 		return videos;
 	}
 	
-	//TODO Revisar estas dos funciones
 	private String parseEtiquetas(LinkedList<Etiqueta> etiquetas) {
 		String etiquetasJuntas = "";
 		for (Etiqueta etiqueta : etiquetas) {

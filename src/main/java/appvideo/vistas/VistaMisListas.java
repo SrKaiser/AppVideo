@@ -21,7 +21,7 @@ import javax.swing.border.LineBorder;
 
 import appvideo.dominio.ListaVideos;
 import appvideo.dominio.Video;
-import appvideo.main.Launcher;
+import appvideo.extra.RenderVideos;
 
 import javax.swing.JComboBox;
 
@@ -40,15 +40,19 @@ public class VistaMisListas extends JPanel {
 	private VistaVideo vistaVideo;
 	private JPanel panelVideo;
 	private JButton btnCancelar;
+	
+	private static boolean reproduciendo = false;
 
 	public VistaMisListas(VistaPrincipal vistaPrincipal) {
 		this.vistaPrincipal = vistaPrincipal;
 		initialize();
 	}
 	
-	//TODO PREGUNTAR SOBRE EL ERROR
+	public static boolean getReproduciendo() {
+		return reproduciendo;
+	}
+
 	public void cargarComboBox() {
-		comboBoxListasVideos.removeAllItems();
 		nombresListasVideos = vistaPrincipal.getControlador().getNombresListasVideos();
 		for (int i = 0; i < nombresListasVideos.size(); i++) {
 			comboBoxListasVideos.addItem(nombresListasVideos.get(i));
@@ -78,6 +82,7 @@ public class VistaMisListas extends JPanel {
 		btnReproducir.addActionListener(ev -> {
 			if (videoSeleccionado != null) {
 				panelVideo.removeAll();
+				reproduciendo = true;
 				vistaVideo = new VistaVideo(vistaPrincipal, videoSeleccionado);
 				panelVideo.add(vistaVideo);
 				vistaVideo.ocultarDatos();
@@ -142,6 +147,7 @@ public class VistaMisListas extends JPanel {
 
 		comboBoxListasVideos = new JComboBox<String>();
 		panel_3.add(comboBoxListasVideos);
+		cargarComboBox();
 
 		JPanel panelListaVideos = new JPanel();
 		panel_1.add(panelListaVideos);
@@ -151,7 +157,7 @@ public class VistaMisListas extends JPanel {
 		panelListaVideos.add(scrollPaneListaVideos);
 
 		listVideos = new JList<Video>();
-		listVideos.setCellRenderer(Launcher.createListRenderer());
+		listVideos.setCellRenderer(RenderVideos.createListRenderer());
 		listaModelVideos = new DefaultListModel<Video>();
 		listVideos.setModel(listaModelVideos);
 		scrollPaneListaVideos.setViewportView(listVideos);

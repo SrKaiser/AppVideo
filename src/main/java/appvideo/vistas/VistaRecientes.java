@@ -11,7 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JList;
 
 import appvideo.dominio.Video;
-import appvideo.main.Launcher;
+import appvideo.extra.RenderVideos;
 
 
 //TODO Pendiente cancelar la reproducción cuando se abandona la vista de recientes
@@ -27,10 +27,16 @@ public class VistaRecientes extends JPanel {
 	private JPanel panelVideo;
 	private VistaVideo vistaVideo;
 	
+	private static boolean reproduciendo = false;
+	
 	public VistaRecientes(VistaPrincipal vistaPrincipal) {
 		this.vistaPrincipal = vistaPrincipal;
 
 		initialize();
+	}
+	
+	public static boolean getReproduciendo() {
+		return reproduciendo;
 	}
 	
 	private void reproducirVideo() {
@@ -39,7 +45,7 @@ public class VistaRecientes extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					Video video = listaModelVideos.get(listVideosRecientes.getSelectedIndex());
-					
+					reproduciendo = true;
 					panelVideo.removeAll();
 					vistaVideo = new VistaVideo(vistaPrincipal, video);
 					panelVideo.add(vistaVideo);
@@ -71,16 +77,17 @@ public class VistaRecientes extends JPanel {
 		panelListaRecientes.add(scrollPaneListaRecientes);
 		
 		listVideosRecientes = new JList<Video>();
-		listVideosRecientes.setCellRenderer(Launcher.createListRenderer());
+		listVideosRecientes.setCellRenderer(RenderVideos.createListRenderer());
 		listaModelVideos = new DefaultListModel<Video>();
 		listVideosRecientes.setModel(listaModelVideos);
 		scrollPaneListaRecientes.setViewportView(listVideosRecientes);
+		
+		cargarListaRecientes();
 		
 		listener();
 	}
 	
 	public void cargarListaRecientes() {
-		listaModelVideos.removeAllElements();
 		for(Video video : vistaPrincipal.getControlador().getVideosRecientes().getVideos()) {
 			listaModelVideos.addElement(video);
 		}

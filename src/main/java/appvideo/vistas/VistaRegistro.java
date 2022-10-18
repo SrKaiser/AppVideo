@@ -10,6 +10,9 @@ import javax.swing.JOptionPane;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
@@ -66,24 +69,34 @@ public class VistaRegistro extends JPanel {
 	
 	private void registrarse() {
 		botonRegistrarse.addActionListener(ev -> {
-			int registrado;
-			registrado = controlador.registrarUsuario(campoNombre.getText(),
-					campoApellidos.getText(), campoCorreo.getText(), dateChooser.getDate(), campoUsuario.getText(),
-					String.valueOf(campoContrasena.getPassword()), String.valueOf(campoConfirmar.getPassword()));
-			if (registrado == Controlador.REGISTRO_CORRECTO) {
+			
+			if (controlador.esUsuarioRegistrado(campoUsuario.getText())) {
+				JOptionPane.showMessageDialog(vistaPrincipal.getAppVideo(), "El usuario introducido ya está registrado.\n", "Registro", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			else if (campoNombre.getText().isEmpty() || campoApellidos.getText().isEmpty() || campoCorreo.getText().isEmpty() || dateChooser.getDate() == null
+					|| campoUsuario.getText().isEmpty() || String.valueOf(campoContrasena.getPassword()).isEmpty() || String.valueOf(campoConfirmar.getPassword()).isEmpty()) {
+				JOptionPane.showMessageDialog(vistaPrincipal.getAppVideo(), "Por favor rellena todos los campos.\n", "Registro", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			else if (!String.valueOf(campoContrasena.getPassword()).equals(String.valueOf(campoConfirmar.getPassword()))) {
+				JOptionPane.showMessageDialog(vistaPrincipal.getAppVideo(), "Las contraseñas no coinciden.\n", "Registro", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+
+			String regex = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
+			Pattern pat = Pattern.compile(regex);
+			Matcher mat = pat.matcher(campoCorreo.getText());
+			if (!mat.find()) {
+				JOptionPane.showMessageDialog(vistaPrincipal.getAppVideo(), "El email introducido no es válido.\n", "Registro", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+
+			if (controlador.registrarUsuario(campoNombre.getText(), campoApellidos.getText(), campoCorreo.getText(), dateChooser.getDate(), campoUsuario.getText(), String.valueOf(campoContrasena.getPassword()), String.valueOf(campoConfirmar.getPassword()))) {
 				JOptionPane.showMessageDialog(vistaPrincipal.getAppVideo(), "Usuario registrado correctamente.", "Registro", JOptionPane.INFORMATION_MESSAGE);
 				vistaPrincipal.cargarLogin();
-			} else if (registrado == Controlador.REGISTRO_REPETIDO) {
-				JOptionPane.showMessageDialog(vistaPrincipal.getAppVideo(), "El usuario introducido ya está registrado.\n", "Registro", JOptionPane.ERROR_MESSAGE);
-			} else if (registrado == Controlador.REGISTRO_INCOMPLETO) {
-				JOptionPane.showMessageDialog(vistaPrincipal.getAppVideo(), "Por favor rellena todos los campos.\n", "Registro", JOptionPane.ERROR_MESSAGE);
-			} else if (registrado == Controlador.REGISTRO_PASSWORDFAIL) {
-				JOptionPane.showMessageDialog(vistaPrincipal.getAppVideo(), "Las contraseñas no coinciden.\n", "Registro", JOptionPane.ERROR_MESSAGE);
-			} else if ( registrado == Controlador.REGISTRO_EMAILFAIL) {
-				JOptionPane.showMessageDialog(vistaPrincipal.getAppVideo(), "El email introducido no es válido.\n", "Registro", JOptionPane.ERROR_MESSAGE);
 			}
-		});
-			
+		});	
 	}
 	
 	private void listener() {

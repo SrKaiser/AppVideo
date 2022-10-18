@@ -21,9 +21,9 @@ import javax.swing.table.TableColumnModel;
 import appvideo.dominio.Etiqueta;
 import appvideo.dominio.Video;
 import appvideo.extra.TextPrompt;
-import appvideo.extra.VideoTable;
-import appvideo.main.Launcher;
+import appvideo.extra.VideoTableModel;
 import appvideo.persistencia.DAOException;
+import appvideo.extra.RenderVideos;
 
 import java.awt.Color;
 import javax.swing.JLabel;
@@ -42,7 +42,7 @@ public class VistaExplorar extends JPanel {
 	private VistaPrincipal vistaPrincipal;
 	private JTable table;
 
-	private VideoTable tablaVideos;
+	private VideoTableModel tablaVideos;
 	private JScrollPane scrollPaneTablaVideos;
 	private JPanel panelTablaVideos;
 
@@ -65,8 +65,8 @@ public class VistaExplorar extends JPanel {
 		table = new JTable();
 		table.setBackground(new Color(240, 240, 240));
 		table.setCellSelectionEnabled(true);
-		table.setDefaultRenderer(Object.class, Launcher.createTableRenderer());
-		tablaVideos = new VideoTable();
+		table.setDefaultRenderer(Object.class, RenderVideos.createTableRenderer());
+		tablaVideos = new VideoTableModel();
 		try {
 			tablaVideos.fillTable(vistaPrincipal.getControlador().getVideos());
 		} catch (DAOException e) {

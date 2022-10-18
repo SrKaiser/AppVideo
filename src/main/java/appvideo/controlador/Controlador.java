@@ -1,4 +1,4 @@
-package appvideo.controlador;
+  	package appvideo.controlador;
 
 import appvideo.persistencia.IUsuarioDAO;
 import appvideo.persistencia.IVideoDAO;
@@ -17,8 +17,6 @@ import java.util.Date;
 import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import appvideo.dominio.Etiqueta;
 import appvideo.dominio.ListaVideos;
@@ -87,33 +85,19 @@ public final class Controlador implements VideosListener {
 		return false;
 	}
 
-	public int registrarUsuario(String nombre, String apellidos, String email, Date fechaNacimiento, String login,
+	public boolean registrarUsuario(String nombre, String apellidos, String email, Date fechaNacimiento, String login,
 			String password, String password2) {
-
-		if (esUsuarioRegistrado(login))
-			return REGISTRO_REPETIDO;
-		else if (nombre.isEmpty() || apellidos.isEmpty() || email.isEmpty() || fechaNacimiento == null
-				|| login.isEmpty() || password.isEmpty() || password2.isEmpty())
-			return REGISTRO_INCOMPLETO;
-		else if (!password.equals(password2))
-			return REGISTRO_PASSWORDFAIL;
-
-		String regex = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
-		Pattern pat = Pattern.compile(regex);
-		Matcher mat = pat.matcher(email);
-		if (!mat.find()) {
-			return REGISTRO_EMAILFAIL;
-		}
 
 		Usuario usuario = new Usuario(nombre, apellidos, email, fechaNacimiento, login, password);
 		
+		// Para crear la lista de videos recientes y guardarla nada más crear el usuario
 		IListaVideosDAO listaVideosDAO = factoria.getListaVideosDAO();
 		listaVideosDAO.crearListaVideos(usuario.getVideosRecientes());
 		
 		IUsuarioDAO usuarioDAO = factoria.getUsuarioDAO(); /* Adaptador DAO para almacenar el nuevo Usuario en la BD */
 		usuarioDAO.crearUsuario(usuario);
 		repositorioUsuarios.addUsuario(usuario);
-		return REGISTRO_CORRECTO;
+		return true;
 	}
 
 	public void logoutUsuario() {
@@ -150,7 +134,7 @@ public final class Controlador implements VideosListener {
 		this.cargadorVideos.setArchivoVideos(archivo);
 	}
 	
-	//TODO Revisar
+	//Dado una lista de etiquetas crear un array (argumento variable) para registrar el video con sus etiquetas posteriormente
 	public Etiqueta[] etiquetaFromString(List<String> etiquetas) {
 		ArrayList<Etiqueta> e = new ArrayList<Etiqueta>();
 		etiquetas.stream().forEach(et -> e.add(new Etiqueta(et)));

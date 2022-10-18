@@ -22,9 +22,9 @@ import javax.swing.table.TableColumnModel;
 import appvideo.dominio.ListaVideos;
 import appvideo.dominio.Video;
 import appvideo.extra.TextPrompt;
-import appvideo.extra.VideoTable;
-import appvideo.main.Launcher;
+import appvideo.extra.VideoTableModel;
 import appvideo.persistencia.DAOException;
+import appvideo.extra.RenderVideos;
 
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
@@ -45,7 +45,7 @@ public class VistaNuevaLista extends JPanel {
 	private JPanel panelTablaVideos;
 	private JScrollPane scrollPaneTablaVideos;
 	private JTable table;
-	private VideoTable tablaVideos;
+	private VideoTableModel tablaVideos;
 
 	private JButton btnBuscar;
 
@@ -72,8 +72,8 @@ public class VistaNuevaLista extends JPanel {
 		table = new JTable();
 		table.setBackground(new Color(240, 240, 240));
 		table.setCellSelectionEnabled(true);
-		table.setDefaultRenderer(Object.class, Launcher.createTableRenderer());
-		tablaVideos = new VideoTable();
+		table.setDefaultRenderer(Object.class, RenderVideos.createTableRenderer());
+		tablaVideos = new VideoTableModel();
 		try {
 			tablaVideos.fillTable(vistaPrincipal.getControlador().getVideos());
 		} catch (DAOException e) {
@@ -357,7 +357,7 @@ public class VistaNuevaLista extends JPanel {
 		panelListaVideos.add(scrollPaneListaVideos);
 
 		listVideos = new JList<Video>();
-		listVideos.setCellRenderer(Launcher.createListRenderer());
+		listVideos.setCellRenderer(RenderVideos.createListRenderer());
 		listaModelVideos = new DefaultListModel<Video>();
 		listVideos.setModel(listaModelVideos);
 		scrollPaneListaVideos.setViewportView(listVideos);

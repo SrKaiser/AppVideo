@@ -8,12 +8,12 @@ import javax.swing.table.AbstractTableModel;
 import appvideo.dominio.Video;
 
 @SuppressWarnings("serial")
-public class VideoTable extends AbstractTableModel {
+public class VideoTableModel extends AbstractTableModel {
 	
 	private static final int numColumnas = 4;
 	private List<Video> videos;
 	
-	public VideoTable() {
+	public VideoTableModel() {
 		this.videos = new LinkedList<Video>();
 	}
 	
