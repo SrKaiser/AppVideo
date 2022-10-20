@@ -149,5 +149,14 @@ public class Usuario {
 		}
 	}
 	
+	public String imprimirListas() {
+		String imprimir = "";
+		for(ListaVideos listaVideo : listasVideos) {
+			imprimir += "Nombre de la lista: " + listaVideo.getNombre() + "\n";
+			imprimir += listaVideo.imprimirVideos() + "\n";
+		}
+		return imprimir;
+	}
+	
 	
 }

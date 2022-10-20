@@ -26,6 +26,7 @@ public class TDSUsuarioDAO implements IUsuarioDAO {
 	private static final String LOGIN = "login";
 	private static final String PASSWORD = "password";
 	private static final String FECHA_NACIMIENTO = "fechaNacimiento";
+	private static final String PREMIUM = "premium";
 	
 	private static final String VIDEOS_RECIENTES = "videosRecientes";
 	private static final String LISTAS_VIDEOS = "listasVideos";
@@ -61,6 +62,7 @@ public class TDSUsuarioDAO implements IUsuarioDAO {
 				new Propiedad(LOGIN, usuario.getLogin()), 
 				new Propiedad(PASSWORD, usuario.getPassword()),
 				new Propiedad(FECHA_NACIMIENTO, dateFormat.format(usuario.getFechaNacimiento())),
+				new Propiedad(PREMIUM, String.valueOf(usuario.isPremium())),
 				new Propiedad(VIDEOS_RECIENTES, String.valueOf(usuario.getVideosRecientes().getId())),
 				new Propiedad(LISTAS_VIDEOS, parseListasVideos(usuario.getListasVideos())))));
 		return eUsuario;
@@ -97,6 +99,8 @@ public class TDSUsuarioDAO implements IUsuarioDAO {
 				prop.setValor(usuario.getLogin());
 			} else if (prop.getNombre().equals(FECHA_NACIMIENTO)) {
 				prop.setValor(dateFormat.format(usuario.getFechaNacimiento()));
+			} else if (prop.getNombre().equals(PREMIUM)) {
+				prop.setValor(String.valueOf(usuario.isPremium()));
 			} else if (prop.getNombre().equals(VIDEOS_RECIENTES)) {
 				prop.setValor(String.valueOf(usuario.getVideosRecientes().getId()));
 			} else if (prop.getNombre().equals(LISTAS_VIDEOS)) {
@@ -119,6 +123,7 @@ public class TDSUsuarioDAO implements IUsuarioDAO {
 		}
 		String login = servPersistencia.recuperarPropiedadEntidad(eUsuario, LOGIN);
 		String password = servPersistencia.recuperarPropiedadEntidad(eUsuario, PASSWORD);
+		boolean premium = Boolean.parseBoolean(servPersistencia.recuperarPropiedadEntidad(eUsuario, PREMIUM));
 		ListaVideos recientes = null;
 		recientes = parseVideosRecientes(servPersistencia.recuperarPropiedadEntidad(eUsuario, VIDEOS_RECIENTES));
 		List<ListaVideos> listasVideos = null;
@@ -126,6 +131,7 @@ public class TDSUsuarioDAO implements IUsuarioDAO {
 		
 		Usuario usuario = new Usuario(nombre, apellidos, email, fechaNacimiento, login, password);
 		usuario.setId(eUsuario.getId());
+		usuario.setPremium(premium);
 		usuario.setVideosRecientes(recientes);
 		usuario.setListasVideos(listasVideos);
 
@@ -134,7 +140,7 @@ public class TDSUsuarioDAO implements IUsuarioDAO {
 	
 	public Usuario obtenerUsuario(int id) {
 		Entidad eUsuario = servPersistencia.recuperarEntidad(id);
-
+		
 		return entidadToUsuario(eUsuario);
 	}
 

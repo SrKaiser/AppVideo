@@ -46,6 +46,8 @@ public class VistaPrincipal extends JPanel {
 	private JTextField campoUsuario;
 	private JButton botonAcceder;
 	private JButton botonRegistrarse;
+	private JButton btnPDF;
+	private JButton btnTOP;
 
 	private JPanel panel;
 	private JPanel panelVentanas;
@@ -77,7 +79,6 @@ public class VistaPrincipal extends JPanel {
 
 	public VistaPrincipal() {
 		this.controlador = Controlador.getUnicaInstancia();
-		;
 		initialize();
 		vistaRegistro = new VistaRegistro(this);
 		vistaExplorar = new VistaExplorar(this);
@@ -108,6 +109,10 @@ public class VistaPrincipal extends JPanel {
 			if (login) {
 				vistaLogin = panelViejo;
 				cargarRecientes();
+				if (controlador.getUsuarioActual().isPremium()) {
+					btnPDF.setVisible(true);
+					btnTOP.setVisible(true);
+				}
 			} else {
 				JOptionPane.showMessageDialog(AppVideo, "Nombre de usuario o password no coinciden", "Error",
 						JOptionPane.ERROR_MESSAGE);
@@ -178,6 +183,51 @@ public class VistaPrincipal extends JPanel {
 			}
 		});
 	}
+	
+	private void botonPremium() {
+		btnPremium.addActionListener(ev -> {
+			if(controlador.getUsuarioActual().isPremium()) {
+				Object[] options = {"Aceptar","Cancelar"};
+			    int opcion =JOptionPane.showOptionDialog(AppVideo,"Ya es usuario premium, ¿desea dejar de serlo?\n Perderá todas sus ventajas","Premium",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,new ImageIcon(VistaPrincipal.class.getResource("/appvideo/imagenes/FotoPerfil.png")),options, options[0]);
+			    if (opcion == JOptionPane.YES_OPTION) {
+			    	controlador.setPremium(false);
+					btnPDF.setVisible(false);
+					btnTOP.setVisible(false);
+			    }
+			} else {
+				Object[] options = {"Aceptar","Cancelar"};
+			    int opcion =JOptionPane.showOptionDialog(AppVideo," Todavía no es usuario premium, ¿desea serlo?\n Ser premium desbloquea múltiples funciones"
+			    		+ " como:\n Acceso a filtros, acceso a una lista con los videos más reproducidos y poder generar un PDF con "
+			    		+ "tus listas","Premium",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,new ImageIcon(VistaPrincipal.class.getResource("/appvideo/imagenes/FotoPerfil.png")),options, options[0]);
+			    if (opcion == JOptionPane.YES_OPTION) {
+			    	controlador.setPremium(true);
+					btnPDF.setVisible(true);
+					btnTOP.setVisible(true);
+			    }
+			}
+		});
+	}
+	
+	private void botonPDF() {
+		btnPDF.addActionListener(ev ->{
+			try {
+				controlador.generarPDF();
+				JOptionPane.showMessageDialog(AppVideo, "PDF Generado correctamente.", "Registro", JOptionPane.INFORMATION_MESSAGE);
+			} catch (Exception e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(AppVideo, "No se pudo generar el PDF.", "Registro", JOptionPane.ERROR_MESSAGE);
+			}
+		});
+	}
+	
+	private void botonTOP() {
+		btnTOP.addActionListener(ev ->{
+			if (VistaMisListas.getReproduciendo() == true) {
+				Launcher.getVideoWeb().cancel();
+			}
+			cargarMasVistos();
+		});
+	}
 
 	private void listener() {
 		registroUsuario();
@@ -188,6 +238,9 @@ public class VistaPrincipal extends JPanel {
 		botonMisListas();
 		botonNuevaLista();
 		botonLuz();
+		botonPremium();
+		botonPDF();
+		botonTOP();
 	}
 
 	private void initialize() {
@@ -196,7 +249,7 @@ public class VistaPrincipal extends JPanel {
 		AppVideo.setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(VistaPrincipal.class.getResource("/appvideo/imagenes/YouTube_social_white_squircle.png")));
 		AppVideo.setBackground(Color.WHITE);
-		// AppVideo.setBounds(800, 300, ANCHO_FRAME, ALTO_FRAME);
+		//AppVideo.setBounds(800, 300, ANCHO_FRAME, ALTO_FRAME);
 		AppVideo.setBounds(800, 300, 425, 310);
 		AppVideo.setResizable(false);
 		AppVideo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -279,13 +332,35 @@ public class VistaPrincipal extends JPanel {
 		mnUsuario.add(btnLogout);
 
 		btnPremium = new JButton("Premium");
+		btnPremium.setForeground(new Color(255, 255, 255));
 		btnPremium.setPreferredSize(new Dimension(75, 23));
 		btnPremium.setMinimumSize(new Dimension(75, 23));
 		btnPremium.setMaximumSize(new Dimension(75, 23));
-		btnPremium.setBackground(new Color(240, 240, 240));
+		btnPremium.setBackground(new Color(128, 0, 0));
 		btnPremium.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		mnUsuario.add(btnPremium);
-
+		
+		btnPDF = new JButton("PDF");
+		btnPDF.setForeground(new Color(255, 255, 255));
+		btnPDF.setPreferredSize(new Dimension(75, 23));
+		btnPDF.setMinimumSize(new Dimension(75, 23));
+		btnPDF.setMaximumSize(new Dimension(75, 23));
+		btnPDF.setBackground(new Color(255, 0, 0));
+		btnPDF.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		mnUsuario.add(btnPDF);
+		
+		btnTOP = new JButton("Top 10");
+		btnTOP.setForeground(new Color(255, 255, 255));
+		btnTOP.setPreferredSize(new Dimension(75, 23));
+		btnTOP.setMinimumSize(new Dimension(75, 23));
+		btnTOP.setMaximumSize(new Dimension(75, 23));
+		btnTOP.setBackground(new Color(255, 0, 0));
+		btnTOP.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		mnUsuario.add(btnTOP);
+		
+		btnPDF.setVisible(false);
+		btnTOP.setVisible(false);
+		
 		panel.setVisible(false);
 
 		panelVentanas = new JPanel();
@@ -421,7 +496,25 @@ public class VistaPrincipal extends JPanel {
 	public void cargarRecientes() {
 		AppVideo.setBounds(600, 200, ANCHO_FRAME, ALTO_FRAME);
 		panel.setVisible(true);
-		panelNuevo = new VistaRecientes(this);
+		VistaRecientes vistaRecientes = new VistaRecientes(this);
+		panelNuevo = vistaRecientes;
+		vistaRecientes.cargarListaRecientes();
+		AppVideo.remove(panelViejo);
+		panelViejo = panelNuevo;
+		AppVideo.getContentPane().add(panelNuevo, BorderLayout.CENTER);
+		this.vistaRegistro.limpiar();
+		AppVideo.setResizable(true);
+		AppVideo.revalidate();
+		AppVideo.repaint();
+		AppVideo.validate();
+	}
+	
+	public void cargarMasVistos() {
+		AppVideo.setBounds(600, 200, ANCHO_FRAME, ALTO_FRAME);
+		panel.setVisible(true);
+		VistaRecientes vistaRecientes = new VistaRecientes(this);
+		panelNuevo = vistaRecientes;
+		vistaRecientes.cargarMasVistos();
 		AppVideo.remove(panelViejo);
 		panelViejo = panelNuevo;
 		AppVideo.getContentPane().add(panelNuevo, BorderLayout.CENTER);

@@ -14,8 +14,6 @@ import appvideo.dominio.Video;
 import appvideo.extra.RenderVideos;
 
 
-//TODO Pendiente cancelar la reproducción cuando se abandona la vista de recientes
-
 @SuppressWarnings("serial")
 public class VistaRecientes extends JPanel {
 	
@@ -82,13 +80,18 @@ public class VistaRecientes extends JPanel {
 		listVideosRecientes.setModel(listaModelVideos);
 		scrollPaneListaRecientes.setViewportView(listVideosRecientes);
 		
-		cargarListaRecientes();
-		
 		listener();
 	}
 	
 	public void cargarListaRecientes() {
 		for(Video video : vistaPrincipal.getControlador().getVideosRecientes().getVideos()) {
+			listaModelVideos.addElement(video);
+			
+		}
+	}
+	
+	public void cargarMasVistos() {
+		for(Video video : vistaPrincipal.getControlador().getMasVistos()) {
 			listaModelVideos.addElement(video);
 		}
 	}

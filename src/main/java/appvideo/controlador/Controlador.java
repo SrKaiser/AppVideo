@@ -12,6 +12,7 @@ import appvideo.dominio.Usuario;
 import appvideo.dominio.Video;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.EventObject;
@@ -23,6 +24,10 @@ import appvideo.dominio.ListaVideos;
 import appvideo.dominio.RepositorioEtiquetas;
 import appvideo.dominio.RepositorioUsuarios;
 import appvideo.dominio.RepositorioVideos;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 public final class Controlador implements VideosListener {
 
@@ -113,6 +118,12 @@ public final class Controlador implements VideosListener {
 
 		repositorioUsuarios.removeUsuario(usuario);
 		return true;
+	}
+	
+	public void setPremium(boolean valor) {
+		usuarioActual.setPremium(valor);
+		IUsuarioDAO usuarioDAO = factoria.getUsuarioDAO();
+		usuarioDAO.modificarUsuario(usuarioActual);
 	}
 
 	/* Funciones para controlar los Videos */
@@ -239,6 +250,21 @@ public final class Controlador implements VideosListener {
 		listaVideosDAO.modificarListaVideos(listaVideos);
 		IUsuarioDAO usuarioDAO = factoria.getUsuarioDAO();
 		usuarioDAO.modificarUsuario(this.usuarioActual);
+	}
+	
+	public void generarPDF() throws Exception{
+		FileOutputStream archivo = new FileOutputStream("E:\\" + usuarioActual.getNombre() + ".pdf");
+		Document documento = new Document();
+		PdfWriter.getInstance(documento, archivo);
+		documento.open();
+		documento.add(new Paragraph("Listas de videos del usuario: " + usuarioActual.getNombre()));
+		documento.add(new Paragraph());
+		documento.add(new Paragraph(usuarioActual.imprimirListas()));
+		documento.close();
+	}
+	
+	public List<Video> getMasVistos(){
+		return repositorioVideos.getMasVistos();
 	}
 	
 }

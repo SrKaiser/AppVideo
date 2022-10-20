@@ -76,6 +76,14 @@ public class ListaVideos {
 
 	}
 	
+	public String imprimirVideos() {
+		String imprimir = "";
+		for (Video video : videos) {
+			imprimir += "\tTítulo: " + video.getTitulo() + " - Reproducciones: " + video.getNumReproducciones() + "\n";
+		}
+		return imprimir;
+	}
+	
 	
 	
 	

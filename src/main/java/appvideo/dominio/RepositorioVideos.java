@@ -3,6 +3,7 @@ package appvideo.dominio;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import appvideo.persistencia.DAOException;
 import appvideo.persistencia.FactoriaDAOAbstracto;
@@ -65,5 +66,15 @@ public class RepositorioVideos {
 		}
 		return videos;
 	}
+	
+	//TODO --
+	public List<Video> getMasVistos(){
+        List<Video> listaVideoTopTen = coleccionVideosTitulo.values().stream()
+        .sorted((video1, video2)->video2.getNumReproducciones()-video1.getNumReproducciones())
+        .limit(10)
+        .collect(Collectors.toList());
+        
+        return listaVideoTopTen;
+    }
 
 }
