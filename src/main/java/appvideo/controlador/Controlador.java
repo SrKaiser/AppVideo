@@ -70,6 +70,11 @@ public final class Controlador implements VideosListener {
 	public Usuario getUsuarioActual() {
 		return usuarioActual;
 	}
+	
+	public boolean isLogeado() {
+		if (usuarioActual!=null) return true;
+		else return false;
+	}
 
 	public boolean esUsuarioRegistrado(String login) {
 		return repositorioUsuarios.getUsuario(login) != null;

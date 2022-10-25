@@ -11,8 +11,12 @@ import java.util.StringTokenizer;
 
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
+import appvideo.dominio.FiltroImpopulares;
+import appvideo.dominio.FiltroMisListas;
+import appvideo.dominio.FiltroNombresLargos;
 import appvideo.dominio.FiltroVideo;
 import appvideo.dominio.ListaVideos;
+import appvideo.dominio.NoFiltro;
 import appvideo.dominio.Usuario;
 import beans.Entidad;
 import beans.Propiedad;
@@ -68,7 +72,7 @@ public class TDSUsuarioDAO implements IUsuarioDAO {
 				new Propiedad(PREMIUM, String.valueOf(usuario.isPremium())),
 				new Propiedad(VIDEOS_RECIENTES, String.valueOf(usuario.getVideosRecientes().getId())),
 				new Propiedad(LISTAS_VIDEOS, parseListasVideos(usuario.getListasVideos())),
-				new Propiedad(FILTRO, String.valueOf(usuario.getFiltro())))));
+				new Propiedad(FILTRO, String.valueOf(usuario.getFiltro().getCodigo())))));
 		return eUsuario;
 	}
 
@@ -134,15 +138,21 @@ public class TDSUsuarioDAO implements IUsuarioDAO {
 		recientes = parseVideosRecientes(servPersistencia.recuperarPropiedadEntidad(eUsuario, VIDEOS_RECIENTES));
 		List<ListaVideos> listasVideos = null;
 		listasVideos = parseListasVideos2(servPersistencia.recuperarPropiedadEntidad(eUsuario, LISTAS_VIDEOS));
-		//FiltroVideo filtro = null;
-		//filtro = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eUsuario, FILTRO));
+		FiltroVideo filtro = null;
+		int codigoFiltro = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eUsuario, FILTRO));
+		switch (codigoFiltro) {
+			case 0: filtro = new NoFiltro(); break;
+			case 1: filtro = new FiltroMisListas(); break; 
+			case 2: filtro = new FiltroNombresLargos(); break;
+			default: filtro = new FiltroImpopulares(); break;
+		}
 		
 		Usuario usuario = new Usuario(nombre, apellidos, email, fechaNacimiento, login, password);
 		usuario.setId(eUsuario.getId());
 		usuario.setPremium(premium);
 		usuario.setVideosRecientes(recientes);
 		usuario.setListasVideos(listasVideos);
-		//usuario.setFiltro(filtro);
+		usuario.setFiltro(filtro);
 
 		return usuario;
 	}
@@ -192,12 +202,6 @@ public class TDSUsuarioDAO implements IUsuarioDAO {
 			}
 		}
 		return listavideos;
-	}
-	
-	private ListaVideos parseFiltros(String id) {
-		TDSListaVideosDAO listaVideosDAO = TDSListaVideosDAO.getUnicaInstancia();
-		return listaVideosDAO.obtenerListaVideos(Integer.valueOf(id));
-		
 	}
 
 }
