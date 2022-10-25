@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import appvideo.dominio.Etiqueta;
+import appvideo.dominio.FiltroVideo;
 import appvideo.dominio.ListaVideos;
 import appvideo.dominio.RepositorioEtiquetas;
 import appvideo.dominio.RepositorioUsuarios;
@@ -41,11 +42,6 @@ public final class Controlador implements VideosListener {
 
 	private CargadorVideos cargadorVideos;
 
-	public static final int REGISTRO_CORRECTO = 0;
-	public static final int REGISTRO_REPETIDO = 1;
-	public static final int REGISTRO_INCOMPLETO = 2;
-	public static final int REGISTRO_PASSWORDFAIL = 3;
-	public static final int REGISTRO_EMAILFAIL = 4;
 
 	private Controlador() {
 
@@ -62,8 +58,6 @@ public final class Controlador implements VideosListener {
 			e.printStackTrace();
 		}
 	}
-	
-	
 
 	public static Controlador getUnicaInstancia() {
 		if (unicaInstancia == null)
@@ -127,8 +121,8 @@ public final class Controlador implements VideosListener {
 	}
 
 	/* Funciones para controlar los Videos */
-	public LinkedList<Video> getVideos() throws DAOException {
-		return repositorioVideos.getVideos();
+	public List<Video> getVideos() throws DAOException {
+		return usuarioActual.filtrarVideos(repositorioVideos.getVideos());
 	}
 
 	public void registrarVideo(String nombre, String url, Etiqueta... etiquetas) {
@@ -162,7 +156,7 @@ public final class Controlador implements VideosListener {
 	}
 	
 	public List<Video> explorarVideos(String titulo, LinkedList<Etiqueta> etiquetas) throws DAOException {
-		return repositorioVideos.explorarVideos(titulo, etiquetas);
+		return usuarioActual.filtrarVideos(repositorioVideos.explorarVideos(titulo, etiquetas));
 	}
 	
 	public void aumentarReproducciones(Video video) {
@@ -265,6 +259,22 @@ public final class Controlador implements VideosListener {
 	
 	public List<Video> getMasVistos(){
 		return repositorioVideos.getMasVistos();
+	}
+	
+	/* Funciones para manejar los filtros */
+	
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	public void cambiarFiltro(String nombre) {
+		try {
+			Class<FiltroVideo> filtro = (Class<FiltroVideo>) Class.forName("appvideo.dominio." + nombre);
+			usuarioActual.setFiltro(filtro.newInstance());
+			IUsuarioDAO usuarioDAO = factoria.getUsuarioDAO();
+			usuarioDAO.modificarUsuario(usuarioActual);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 }

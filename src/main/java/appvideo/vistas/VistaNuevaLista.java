@@ -6,7 +6,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -74,11 +73,7 @@ public class VistaNuevaLista extends JPanel {
 		table.setCellSelectionEnabled(true);
 		table.setDefaultRenderer(Object.class, RenderVideos.createTableRenderer());
 		tablaVideos = new VideoTableModel();
-		try {
-			tablaVideos.fillTable(vistaPrincipal.getControlador().getVideos());
-		} catch (DAOException e) {
-			e.printStackTrace();
-		}
+
 		table.setModel(tablaVideos);
 		table.setRowHeight(125);
 		table.getTableHeader().setUI(null);
@@ -121,7 +116,7 @@ public class VistaNuevaLista extends JPanel {
 				for (int i = filas - 1; i >= 0; i--)
 					tablaVideos.deleteRow(i);
 
-				LinkedList<Video> todosVideos = null;
+				List<Video> todosVideos = null;
 				try {
 					todosVideos = vistaPrincipal.getControlador().getVideos();
 				} catch (DAOException e) {

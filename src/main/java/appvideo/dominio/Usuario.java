@@ -20,6 +20,8 @@ public class Usuario {
 	
 	private List<ListaVideos> listasVideos;
 	
+	private FiltroVideo filtro;
+	
 	public Usuario(String nombre, String apellidos, String email, Date fechaNacimiento, String login, String password) {
 		this.id = 0;
 		this.nombre = nombre;
@@ -32,6 +34,8 @@ public class Usuario {
 		
 		this.videosRecientes = new ListaVideos("recientes");
 		this.listasVideos = new LinkedList<ListaVideos>();
+		
+		this.filtro = new NoFiltro();
 	}
 
 	public int getId() {
@@ -156,6 +160,32 @@ public class Usuario {
 			imprimir += listaVideo.imprimirVideos() + "\n";
 		}
 		return imprimir;
+	}
+	
+	public FiltroVideo getFiltro() {
+		return filtro;
+	}
+
+	public void setFiltro(FiltroVideo filtro) {
+		this.filtro = filtro;
+	}
+
+	public boolean videoPerteneceLista(Video video)
+    {	
+        return listasVideos.stream()
+        .flatMap(l->l.getVideos().stream())
+        .anyMatch(v->v.getTitulo().equals(video.getTitulo()));
+    }
+
+	
+	public List<Video> filtrarVideos(List<Video> videos){
+		List<Video> videosFiltrados = new LinkedList<Video>();
+    	for (Video video : videos) {
+			if(filtro.isVideoOk(video, this)) {
+				videosFiltrados.add(video);
+			}
+		}
+    	return  videosFiltrados;
 	}
 	
 	

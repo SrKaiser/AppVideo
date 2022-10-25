@@ -68,7 +68,7 @@ public class VistaPrincipal extends JPanel {
 	private JButton btnHistorial;
 	private JButton btnMisListas;
 	private JButton btnNuevaLista;
-	private JComboBox comboBox;
+	private JComboBox<String> comboBoxFiltros;
 	private JMenu mnUsuario;
 	private JButton btnLogout;
 	private JButton btnPremium;
@@ -109,6 +109,7 @@ public class VistaPrincipal extends JPanel {
 			if (login) {
 				vistaLogin = panelViejo;
 				cargarRecientes();
+				cargarFiltros();
 				if (controlador.getUsuarioActual().isPremium()) {
 					btnPDF.setVisible(true);
 					btnTOP.setVisible(true);
@@ -193,6 +194,7 @@ public class VistaPrincipal extends JPanel {
 			    	controlador.setPremium(false);
 					btnPDF.setVisible(false);
 					btnTOP.setVisible(false);
+					cargarFiltros();
 			    }
 			} else {
 				Object[] options = {"Aceptar","Cancelar"};
@@ -203,6 +205,7 @@ public class VistaPrincipal extends JPanel {
 			    	controlador.setPremium(true);
 					btnPDF.setVisible(true);
 					btnTOP.setVisible(true);
+					cargarFiltros();
 			    }
 			}
 		});
@@ -228,6 +231,25 @@ public class VistaPrincipal extends JPanel {
 			cargarMasVistos();
 		});
 	}
+	
+	private void seleccionarFiltro() {
+		comboBoxFiltros.addActionListener(ev ->{
+			if(comboBoxFiltros.getSelectedItem() != null) {
+				String nombreFiltro = (String) comboBoxFiltros.getSelectedItem();
+				controlador.cambiarFiltro(nombreFiltro);
+			}
+		});
+	}
+	
+	private void cargarFiltros() {
+		comboBoxFiltros.removeAllItems();
+		comboBoxFiltros.addItem("NoFiltro");
+		if(controlador.getUsuarioActual().isPremium()) {
+			comboBoxFiltros.addItem("FiltroMisListas");
+			comboBoxFiltros.addItem("FiltroNombresLargos");
+			comboBoxFiltros.addItem("FiltroImpopulares");
+		}
+	}
 
 	private void listener() {
 		registroUsuario();
@@ -241,6 +263,7 @@ public class VistaPrincipal extends JPanel {
 		botonPremium();
 		botonPDF();
 		botonTOP();
+		seleccionarFiltro();
 	}
 
 	private void initialize() {
@@ -298,10 +321,10 @@ public class VistaPrincipal extends JPanel {
 		lblNewLabel = new JLabel("                       ");
 		panel.add(lblNewLabel);
 
-		comboBox = new JComboBox();
-		comboBox.setBackground(new Color(240, 240, 240));
-		comboBox.setPreferredSize(new Dimension(100, 22));
-		panel.add(comboBox);
+		comboBoxFiltros = new JComboBox<String>();
+		comboBoxFiltros.setBackground(new Color(240, 240, 240));
+		comboBoxFiltros.setPreferredSize(new Dimension(100, 22));
+		panel.add(comboBoxFiltros);
 
 		lblNewLabel_1 = new JLabel("  ");
 		panel.add(lblNewLabel_1);

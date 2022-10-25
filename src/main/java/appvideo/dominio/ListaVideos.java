@@ -70,9 +70,7 @@ public class ListaVideos {
 	}
 	
 	public void removeAllVideos() {
-		for(Video video : videos) {
-			videos.remove(video);
-		}
+		videos = new LinkedList<Video>();
 
 	}
 	

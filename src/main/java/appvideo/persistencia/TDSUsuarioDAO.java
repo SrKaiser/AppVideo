@@ -11,6 +11,7 @@ import java.util.StringTokenizer;
 
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
+import appvideo.dominio.FiltroVideo;
 import appvideo.dominio.ListaVideos;
 import appvideo.dominio.Usuario;
 import beans.Entidad;
@@ -30,6 +31,8 @@ public class TDSUsuarioDAO implements IUsuarioDAO {
 	
 	private static final String VIDEOS_RECIENTES = "videosRecientes";
 	private static final String LISTAS_VIDEOS = "listasVideos";
+	
+	private static final String FILTRO = "filtro";
 
 	private static TDSUsuarioDAO unicaInstancia = null;
 	private static ServicioPersistencia servPersistencia;
@@ -64,7 +67,8 @@ public class TDSUsuarioDAO implements IUsuarioDAO {
 				new Propiedad(FECHA_NACIMIENTO, dateFormat.format(usuario.getFechaNacimiento())),
 				new Propiedad(PREMIUM, String.valueOf(usuario.isPremium())),
 				new Propiedad(VIDEOS_RECIENTES, String.valueOf(usuario.getVideosRecientes().getId())),
-				new Propiedad(LISTAS_VIDEOS, parseListasVideos(usuario.getListasVideos())))));
+				new Propiedad(LISTAS_VIDEOS, parseListasVideos(usuario.getListasVideos())),
+				new Propiedad(FILTRO, String.valueOf(usuario.getFiltro())))));
 		return eUsuario;
 	}
 
@@ -105,6 +109,8 @@ public class TDSUsuarioDAO implements IUsuarioDAO {
 				prop.setValor(String.valueOf(usuario.getVideosRecientes().getId()));
 			} else if (prop.getNombre().equals(LISTAS_VIDEOS)) {
 				prop.setValor(parseListasVideos(usuario.getListasVideos()));
+			} else if (prop.getNombre().equals(FILTRO)) {
+				prop.setValor(String.valueOf(usuario.getFiltro().getCodigo()));
 			}
 			servPersistencia.modificarPropiedad(prop);
 		}
@@ -128,12 +134,15 @@ public class TDSUsuarioDAO implements IUsuarioDAO {
 		recientes = parseVideosRecientes(servPersistencia.recuperarPropiedadEntidad(eUsuario, VIDEOS_RECIENTES));
 		List<ListaVideos> listasVideos = null;
 		listasVideos = parseListasVideos2(servPersistencia.recuperarPropiedadEntidad(eUsuario, LISTAS_VIDEOS));
+		//FiltroVideo filtro = null;
+		//filtro = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eUsuario, FILTRO));
 		
 		Usuario usuario = new Usuario(nombre, apellidos, email, fechaNacimiento, login, password);
 		usuario.setId(eUsuario.getId());
 		usuario.setPremium(premium);
 		usuario.setVideosRecientes(recientes);
 		usuario.setListasVideos(listasVideos);
+		//usuario.setFiltro(filtro);
 
 		return usuario;
 	}
@@ -183,6 +192,12 @@ public class TDSUsuarioDAO implements IUsuarioDAO {
 			}
 		}
 		return listavideos;
+	}
+	
+	private ListaVideos parseFiltros(String id) {
+		TDSListaVideosDAO listaVideosDAO = TDSListaVideosDAO.getUnicaInstancia();
+		return listaVideosDAO.obtenerListaVideos(Integer.valueOf(id));
+		
 	}
 
 }
