@@ -61,13 +61,12 @@ public class RepositorioVideos {
 	public List<Video> explorarVideos(String titulo, LinkedList<Etiqueta> etiquetas) throws DAOException {
 		List<Video> videos = new LinkedList<>();
 		for (Video video : coleccionVideosTitulo.values()) {
-			if (( video.getTitulo().contains(titulo) && video.tieneEtiqueta(etiquetas))  || (titulo.isEmpty() && video.tieneEtiqueta(etiquetas)))
+			if ((titulo.isEmpty() && video.tieneEtiqueta(etiquetas)) || ( video.getTitulo().contains(titulo) && video.tieneEtiqueta(etiquetas)))
 				videos.add(video);
 		}
 		return videos;
 	}
 	
-	//TODO --
 	public List<Video> getMasVistos(){
         List<Video> listaVideoTopTen = coleccionVideosTitulo.values().stream()
         .sorted((video1, video2)->video2.getNumReproducciones()-video1.getNumReproducciones())

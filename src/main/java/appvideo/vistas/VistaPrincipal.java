@@ -234,7 +234,6 @@ public class VistaPrincipal extends JPanel {
 	}
 	
 	private void seleccionarFiltro() {
-		// TODO El ActionListener se activa por algún motivo al logear seleccionando NoFiltro y eso hace que no se pueda conservar el último filtro usado antes de cerrar sesión
 		comboBoxFiltros.addActionListener(ev ->{
 			if(controlador.isLogeado() && comboBoxFiltros.getSelectedItem() != null) {
 				String nombreFiltro = (String) comboBoxFiltros.getSelectedItem();
